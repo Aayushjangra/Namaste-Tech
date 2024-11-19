@@ -17,6 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEffect , useState } from "react";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [signupInput, setSignupInput] = useState({
@@ -46,8 +47,10 @@ const Login = () => {
     },
   ] = useLoginUserMutation();
 
+
+
   
-  console.log(loginError);
+const navigate = useNavigate();
 
   const changeInputHandler = (e, type) => {
     const { name, value } = e.target;
@@ -73,6 +76,7 @@ const Login = () => {
     }
     if(loginIsSuccess && loginData){
       toast.success(loginData.message || "Login successful.");
+      navigate("/")
     }
     if(loginError){ 
       toast.error(loginError.data.message || "login Failed");
