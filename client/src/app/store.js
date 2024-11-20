@@ -9,3 +9,9 @@ export const appStore = configureStore({
   middleware:(defaultMiddleware) => defaultMiddleware().concat(authApi.middleware)
 });
 
+
+//load hone pe data lost nhi hoga store ka
+const initializeApp = async () => {
+  await appStore.dispatch(authApi.endpoints.loadUser.initiate({},{forceRefetch:true}))
+}
+initializeApp();

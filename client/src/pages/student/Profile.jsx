@@ -22,7 +22,7 @@ import { toast } from "sonner";
 const Profile = () => {
   const [name, setName] = useState("");
   const [profilePhoto, setProfilePhoto] = useState("");
-  const { data, isLoading } = useLoadUserQuery();
+  const { data, isLoading, refetch } = useLoadUserQuery();
   const [
     updateUser,
     {
@@ -46,18 +46,21 @@ const Profile = () => {
     await updateUser(formData);
   };
 
+
+
   useEffect(() => {
     if (isSuccess) {
+      refetch();
       toast.success(data?.message || "Profile updated.");
     }
     if (isError) {
       toast.error(error?.message || "Failed to update profile");
     }
-  }, [error, updateUserData, isSuccess, isError]);
+  }, [error, data, isSuccess, isError]);
 
   if (isLoading) return <h1>Profile Loading.....</h1>;
 
-  const { user } = data;
+  const user = data && data.user;
 
   return (
     <div className="max-w-4xl mx-auto px-4 my-24">
@@ -66,7 +69,7 @@ const Profile = () => {
         <div className="flex flex-col items-center">
           <Avatar className="h-18 w-24 md:h-32 md:w-32 mb-4">
             <AvatarImage
-              src={user.profile || "https://github.com/shadcn.png"}
+            src={user?.photoUrl || "https://github.com/shadcn.png"}
               alt="@shadcn"
             />
             <AvatarFallback>CN</AvatarFallback>
@@ -133,7 +136,10 @@ const Profile = () => {
                 </div>
               </div>
               <DialogFooter>
-                <Button onClick={updateUserHandler}>
+                <Button
+                  disabled={updateUserIsLoading}
+                  onClick={updateUserHandler}
+                >
                   {updateUserIsLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please
