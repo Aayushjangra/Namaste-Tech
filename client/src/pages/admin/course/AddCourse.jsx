@@ -40,6 +40,7 @@ const AddCourse = () => {
 useEffect(()=>{
   if(isSuccess){
       toast.success(data?.message || "Course created.");
+      navigate("/admin/course")
       
   }
 },[isSuccess, error])
@@ -86,11 +87,16 @@ useEffect(()=>{
                 <SelectItem value="MERN Stack Development">
                   MERN Stack Development
                 </SelectItem>
+                <SelectItem value="Backend Development">
+                  Backend Development
+                </SelectItem>
                 <SelectItem value="Javascript">Javascript</SelectItem>
                 <SelectItem value="Python">Python</SelectItem>
+                <SelectItem value="Node JS">Node JS</SelectItem>
                 <SelectItem value="Docker">Docker</SelectItem>
                 <SelectItem value="MongoDB">MongoDB</SelectItem>
                 <SelectItem value="HTML">HTML</SelectItem>
+                <SelectItem value="Redux">Redux</SelectItem>
                 <SelectItem value="React NativeL">React Native</SelectItem>
                 <SelectItem value="Graphql">GraphQl</SelectItem>
               </SelectGroup>
