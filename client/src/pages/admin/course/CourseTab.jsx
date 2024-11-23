@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
 import {
   Select,
   SelectContent,
@@ -19,8 +18,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  useEditCourseMutation,
+} from "@/features/api/courseApi";
 import { Loader2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 const CourseTab = () => {
   const navigate = useNavigate();
@@ -35,10 +39,15 @@ const CourseTab = () => {
     courseThumbnail: "",
   });
 
+  const [editCourse, { data, isloading, isSuccess, error }] =
+    useEditCourseMutation();
 
   const [previewThumbnail, setPreviewThumbnail] = useState("");
   const isPublished = true;
-  const isloading = false;
+
+  const params = useParams();
+  const courseId = params.courseId;
+
 
   const changeEventHandler = (e) => {
     const { name, value } = e.target;
@@ -63,10 +72,31 @@ const CourseTab = () => {
     }
   };
 
-  const updateCourseHandler = () => {
-    console.log(input)
-  }
+  const updateCourseHandler = async () => {
+    if (!courseId) {
+      toast.error("Invalid course ID");
+      return;
+    }
 
+    const formData = new FormData();
+    formData.append("courseTitle", input.courseTitle);
+    formData.append("subTitle", input.subTitle);
+    formData.append("description", input.description);
+    formData.append("category", input.category);
+    formData.append("courseLevel", input.courseLevel);
+    formData.append("coursePrice", input.coursePrice);
+    formData.append("courseThumbnail", input.courseThumbnail);
+    await editCourse({ formData, courseId });
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(data.message || "Course update.");
+    }
+    if (error) {
+      toast.error(error.data.message || "Failed to update course");
+    }
+  }, [isSuccess, error]);
 
   return (
     <Card>
@@ -89,22 +119,22 @@ const CourseTab = () => {
           <div>
             <Label>Title</Label>
             <Input
-            type="text"
-            name="courseTitle"
-            value={input.courseTitle}
-            onChange={changeEventHandler}
-            placeholder="Ex. Fullstack developer"
-          />
+              type="text"
+              name="courseTitle"
+              value={input.courseTitle}
+              onChange={changeEventHandler}
+              placeholder="Ex. Fullstack developer"
+            />
           </div>
           <div>
             <Label>SubTitle</Label>
             <Input
-              type="text"
-              name="SubTitle"
-              value={input.subTitleTitle}
-              onChange={changeEventHandler}
-              placeholder="Become a FullStack Developer from zero to here in 3 month"
-            />
+            type="text"
+            name="subTitle"
+            value={input.subTitle}
+            onChange={changeEventHandler}
+            placeholder="Ex. Become a Fullstack developer from zero to hero in 2 months"
+          />
           </div>
           <div>
             <Label>Description</Label>
@@ -149,7 +179,7 @@ const CourseTab = () => {
             </div>
             <div>
               <Label>Course level</Label>
-              <Select  onValueChange={selectCourseLevel}>
+              <Select onValueChange={selectCourseLevel}>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Select a Course level" />
                 </SelectTrigger>
@@ -178,18 +208,18 @@ const CourseTab = () => {
           <div>
             <Label>Course Thumbnail</Label>
             <Input
-            type="file"
-            onChange={selectThumbnail}
-            accept="image/*"
-            className="w-fit"
-          />
+              type="file"
+              onChange={selectThumbnail}
+              accept="image/*"
+              className="w-fit"
+            />
             {previewThumbnail && (
-                <img
-                  src={previewThumbnail}
-                  className="e-64 my-2"
-                  alt="Course Thumbnail"
-                />
-              )}
+              <img
+                src={previewThumbnail}
+                className="e-64 my-2"
+                alt="Course Thumbnail"
+              />
+            )}
           </div>
           <div>
             <Button variant="outline" onClick={() => navigate("/admin/course")}>
