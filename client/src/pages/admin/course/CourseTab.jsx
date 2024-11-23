@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select";
 import {
   useEditCourseMutation,
+  useGetCourseByIdQuery,
 } from "@/features/api/courseApi";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -39,15 +40,34 @@ const CourseTab = () => {
     courseThumbnail: "",
   });
 
+  const params = useParams();
+  const courseId = params.courseId;
+
+  const { data: courseByIdData, isLoading: courseByIdLoading } =
+    useGetCourseByIdQuery(courseId);
+
+  
+  useEffect(() => {
+    if (courseByIdData?.course) { 
+        const course = courseByIdData?.course;
+      setInput({
+        courseTitle: course.courseTitle,
+        subTitle: course.subTitle,
+        description: course.description,
+        category: course.category,
+        courseLevel: course.courseLevel,
+        coursePrice: course.coursePrice,
+        courseThumbnail: "",
+      });
+    }
+  }, [courseByIdData]);
+
+
   const [editCourse, { data, isloading, isSuccess, error }] =
     useEditCourseMutation();
 
   const [previewThumbnail, setPreviewThumbnail] = useState("");
   const isPublished = true;
-
-  const params = useParams();
-  const courseId = params.courseId;
-
 
   const changeEventHandler = (e) => {
     const { name, value } = e.target;
@@ -98,6 +118,9 @@ const CourseTab = () => {
     }
   }, [isSuccess, error]);
 
+
+  if(courseByIdLoading) return <h1>Loading...</h1>
+
   return (
     <Card>
       <CardHeader className="flex flex-row justify-between">
@@ -129,12 +152,12 @@ const CourseTab = () => {
           <div>
             <Label>SubTitle</Label>
             <Input
-            type="text"
-            name="subTitle"
-            value={input.subTitle}
-            onChange={changeEventHandler}
-            placeholder="Ex. Become a Fullstack developer from zero to hero in 2 months"
-          />
+              type="text"
+              name="subTitle"
+              value={input.subTitle}
+              onChange={changeEventHandler}
+              placeholder="Ex. Become a Fullstack developer from zero to hero in 2 months"
+            />
           </div>
           <div>
             <Label>Description</Label>
@@ -221,7 +244,7 @@ const CourseTab = () => {
               />
             )}
           </div>
-          <div>
+          <div className="space-x-4">
             <Button variant="outline" onClick={() => navigate("/admin/course")}>
               Cancel
             </Button>
