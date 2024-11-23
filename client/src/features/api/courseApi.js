@@ -1,9 +1,9 @@
-import {  createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const COURSE_API = "http://localhost:8080/api/v1/course";
 
 export const courseApi = createApi({
   reducerPath: "courseApi",
-  //ye tab tab refetch hoga jab jab new course create hoga ye update sath kare ga table ko 
+  //ye tab tab refetch hoga jab jab new course create hoga ye update sath kare ga table ko
   tagTypes: ["Refetch_Creator_Course"],
   baseQuery: fetchBaseQuery({
     baseUrl: COURSE_API,
@@ -34,14 +34,33 @@ export const courseApi = createApi({
       invalidatesTags: ["Refetch_Creator_Course"],
     }),
     getCourseById: builder.query({
-      query: ( courseId ) => ({
+      query: (courseId) => ({
         url: `/${courseId}`,
         method: "GET",
       }),
       invalidatesTags: ["Refetch_Creator_Course"],
     }),
-    
+    createLecture: builder.mutation({
+      query: ({ lectureTitle, courseId }) => ({
+        url: `/${courseId}/lecture`,
+        method: "POST",
+        body: { lectureTitle },
+      }),
+    }),
+    getCourseLecture: builder.query({
+      query: (courseId) => ({
+        url: `/${courseId}/lecture`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const {useCreateCourseMutation, useGetCreatorCourseQuery,useEditCourseMutation , useGetCourseByIdQuery} = courseApi;
+export const {
+  useCreateCourseMutation,
+  useGetCreatorCourseQuery,
+  useEditCourseMutation,
+  useGetCourseByIdQuery,
+  useCreateLectureMutation,
+  useGetCourseLectureQuery,
+} = courseApi;
