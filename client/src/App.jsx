@@ -13,6 +13,7 @@ import EditCourse from "./pages/admin/course/EditCourse";
 import CreateLeacture from "./pages/admin/lecture/CreateLeacture";
 import EditLecture from "./pages/admin/lecture/EditLecture";
 
+
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -78,7 +79,9 @@ const appRouter = createBrowserRouter([
 function App() {
   return (
     <main>
-      <RouterProvider router={appRouter}></RouterProvider>
+  
+    <RouterProvider router={appRouter} />
+    
     </main>
   );
 }
