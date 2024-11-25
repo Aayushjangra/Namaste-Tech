@@ -13,6 +13,11 @@ import EditCourse from "./pages/admin/course/EditCourse";
 import CreateLeacture from "./pages/admin/lecture/CreateLeacture";
 import EditLecture from "./pages/admin/lecture/EditLecture";
 import CourseDetail from "./pages/student/CourseDetail";
+import {
+  AdminRoute,
+  AuthenticatedUser,
+  ProtectedRoute,
+} from "./components/ProtectedRoutes";
 
 
 const appRouter = createBrowserRouter([
@@ -25,21 +30,33 @@ const appRouter = createBrowserRouter([
         element: (
           <>
             <HeroSection />
-            <Courses/>
+            <Courses />
           </>
         ),
       },
       {
         path: "login",
-        element: <Login />,
+        element: (
+          <AuthenticatedUser>
+            <Login />
+          </AuthenticatedUser>
+        ),
       },
       {
         path: "my-learning",
-        element: <MyLearning/>,
+        element: (
+          <ProtectedRoute>
+            <MyLearning />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "profile",
-        element: <Profile/>,
+        element: (
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "course-detail/:courseId",
@@ -48,8 +65,12 @@ const appRouter = createBrowserRouter([
 
       //admin routes start from here4
       {
-        path:"admin",
-        element:<Sidebar/>,
+        path: "admin",
+        element: (
+          <AdminRoute>
+            <Sidebar />
+          </AdminRoute>
+        ),
         children:[
           {
             path:"dashboard",
