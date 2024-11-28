@@ -121,33 +121,35 @@ const Navbar = () => {
 export default Navbar;
 
 const MobileNabar = () => {
+  const navigate = useNavigate();
+  
   const role = "instructor";
   return (
     <Sheet>
       <SheetTrigger asChild>
         <Button
           size="icon"
-          className="rounded-full bg-gray-200 hover:bg-gray-200"
+        className="rounded-full hover:bg-[#0f0f0f]"
           variant="outline"
         >
           <Menu />
         </Button>
       </SheetTrigger>
       <SheetContent className="flex flex-col">
-        <SheetHeader className="flex flex-row items-center justify-between mt-2">
-          <SheetTitle>E-Learning</SheetTitle>
+      <SheetHeader className="flex flex-row items-center justify-between mt-2">
+      <SheetTitle> <Link to="/">E-Learning</Link></SheetTitle>
           <DarkMode />
         </SheetHeader>
         <Separator className="mr-2" />
         <nav className="flex flex-col space-y-4 ">
-          <span>My Learning</span>
-          <span>Edit Profile </span>
+        <Link to="/my-learning">My Learning</Link>
+        <Link to="/profile">Edit Profile</Link>
           <span>Logout</span>
         </nav>
         {role === "instructor" && (
           <SheetFooter>
             <SheetClose asChild>
-              <Button type="submit">Dashboard</Button>
+            <Button type="submit" onClick={()=> navigate("/admin/dashboard")}>Dashboard</Button>
             </SheetClose>
           </SheetFooter>
         )}

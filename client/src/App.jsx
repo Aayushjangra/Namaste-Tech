@@ -18,6 +18,7 @@ import {
   AuthenticatedUser,
   ProtectedRoute,
 } from "./components/ProtectedRoutes";
+import { ThemeProvider } from "./components/ThemeProvider";
 
 
 const appRouter = createBrowserRouter([
@@ -106,7 +107,9 @@ function App() {
   return (
     <main>
   
+    <ThemeProvider>
     <RouterProvider router={appRouter} />
+    </ThemeProvider>
     
     </main>
   );
