@@ -19,6 +19,7 @@ import {
   ProtectedRoute,
 } from "./components/ProtectedRoutes";
 import { ThemeProvider } from "./components/ThemeProvider";
+import SearchPage from "./pages/student/SearchPage";
 
 
 const appRouter = createBrowserRouter([
@@ -56,6 +57,14 @@ const appRouter = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <Profile />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "course/search",
+        element: (
+          <ProtectedRoute>
+            <SearchPage />
           </ProtectedRoute>
         ),
       },
