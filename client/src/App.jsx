@@ -20,6 +20,7 @@ import {
 } from "./components/ProtectedRoutes";
 import { ThemeProvider } from "./components/ThemeProvider";
 import SearchPage from "./pages/student/SearchPage";
+import CourseProgress from "./pages/student/CourseProgress";
 
 
 const appRouter = createBrowserRouter([
@@ -71,6 +72,10 @@ const appRouter = createBrowserRouter([
       {
         path: "course-detail/:courseId",
         element: <CourseDetail/>
+      },
+      {
+        path: "course-progress/:courseId",
+        element: <CourseProgress/>
       },
 
       //admin routes start from here4

@@ -10,6 +10,12 @@ const Dashboard = () => {
     </CardHeader>
     
     </Card>
+    <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
+    <CardHeader>
+    <CardTitle>Total Revenue</CardTitle>
+    </CardHeader>
+    
+    </Card>
     </div>
   );
 };
