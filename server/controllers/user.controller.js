@@ -95,28 +95,28 @@ export const logout = async (_, res) => {
 
 //get user profile
 
-export const getUserProfile = async (req, res) => {
+export const getUserProfile = async (req,res) => {
   try {
-    const userId = req.id;
-    const user = await User.findById(userId).select("-password");
-    if (!user) {
-      return res.status(404).json({
-        message: "Profile not found",
-        success: false,
-      });
-    }
-    return res.status(200).json({
-      success: true,
-      user,
-    });
+      const userId = req.id;
+      const user = await User.findById(userId).select("-password").populate("enrolledCourses");
+      if(!user){
+          return res.status(404).json({
+              message:"Profile not found",
+              success:false
+          })
+      }
+      return res.status(200).json({
+          success:true,
+          user
+      })
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      success: false,
-      message: "Failed to load user",
-    });
+      console.log(error);
+      return res.status(500).json({
+          success:false,
+          message:"Failed to load user"
+      })
   }
-};
+}
 
 //update profile
 
