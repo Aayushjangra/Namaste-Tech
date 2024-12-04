@@ -52,10 +52,10 @@ const Navbar = () => {
         <div className="flex items-center gap-2">
           <School size={"30"} />
           <Link to="/">
-          <h1 className="hidden md:block font-extrabold text-2xl">
-            Namaste Dev
-          </h1>
-        </Link>
+            <h1 className="hidden md:block font-extrabold text-2xl">
+            Namaste Tech
+            </h1>
+          </Link>
         </div>
         <div>
           {/* User icons and dark mode icon  */}
@@ -86,12 +86,12 @@ const Navbar = () => {
                       Log out
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
-                  
+
                   {user?.role === "instructor" && (
                     <>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem>
-                      <Link to="/admin/dashboard">Dashboard</Link>
+                        <Link to="/admin/dashboard">Dashboard</Link>
                       </DropdownMenuItem>
                     </>
                   )}
@@ -111,7 +111,7 @@ const Navbar = () => {
       </div>
       {/* for mobile device*/}
       <div className="flex md:hidden items-center justify-between px-4 h-full ">
-        <h1 className="font-extrabold text-2xl">E-Learning</h1>
+        <h1 className="font-extrabold text-2xl"><Link to="/">Namaste Tech</Link></h1>
         <MobileNabar />
       </div>
     </div>
@@ -121,35 +121,57 @@ const Navbar = () => {
 export default Navbar;
 
 const MobileNabar = () => {
+  const { user } = useSelector((store) => store.auth);
+
+  const [logoutUser, { data, isSuccess }] = useLogoutUserMutation();
   const navigate = useNavigate();
-  
+
+  const logoutHandler = async () => {
+    await logoutUser();
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(data?.message || "User log out.");
+      navigate("/login");
+    }
+  }, [isSuccess]);
+
   const role = "instructor";
   return (
     <Sheet>
       <SheetTrigger asChild>
         <Button
           size="icon"
-        className="rounded-full hover:bg-[#0f0f0f]"
+          className="rounded-full hover:bg-[#b7b4b4] dark:hover:bg-[#161617]"
           variant="outline"
         >
           <Menu />
         </Button>
       </SheetTrigger>
       <SheetContent className="flex flex-col">
-      <SheetHeader className="flex flex-row items-center justify-between mt-2">
-      <SheetTitle> <Link to="/">E-Learning</Link></SheetTitle>
+        <SheetHeader className="flex flex-row items-center justify-between mt-2">
+          <SheetTitle>
+            {" "}
+            <Link to="/">Namaste Tech</Link>
+          </SheetTitle>
           <DarkMode />
         </SheetHeader>
         <Separator className="mr-2" />
         <nav className="flex flex-col space-y-4 ">
-        <Link to="/my-learning">My Learning</Link>
-        <Link to="/profile">Edit Profile</Link>
-          <span>Logout</span>
+          <Link to="/my-learning">My Learning</Link>
+          <Link to="/profile">Edit Profile</Link>
+          <Button onClick={logoutHandler}>Logout</Button>
         </nav>
         {role === "instructor" && (
           <SheetFooter>
             <SheetClose asChild>
-            <Button type="submit" onClick={()=> navigate("/admin/dashboard")}>Dashboard</Button>
+              <Button
+                type="submit"
+                onClick={() => navigate("/admin/dashboard")}
+              >
+                Dashboard
+              </Button>
             </SheetClose>
           </SheetFooter>
         )}

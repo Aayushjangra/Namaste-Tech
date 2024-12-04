@@ -1,27 +1,3 @@
-// import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-
-
-// const Dashboard = () => {
-//   return (
-//     <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
-//     <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
-//     <CardHeader>
-//     <CardTitle>Total Sales</CardTitle>
-//     </CardHeader>
-    
-//     </Card>
-//     <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
-//     <CardHeader>
-//     <CardTitle>Total Revenue</CardTitle>
-//     </CardHeader>
-    
-//     </Card>
-//     </div>
-//   );
-// };
-
-// export default Dashboard;
-
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useGetPurchasedCoursesQuery } from "@/features/api/purchaseApi";
@@ -29,7 +5,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 
 const Dashboard = () => {
 
-  const {data, isSuccess, isError, isLoading} = useGetPurchasedCoursesQuery();
+  const {data, isError, isLoading} = useGetPurchasedCoursesQuery();
 
   if(isLoading) return <h1>Loading...</h1>
   if(isError) return <h1 className="text-red-500">Failed to get purchased course</h1>
@@ -46,7 +22,7 @@ const Dashboard = () => {
 
   const totalSales = purchasedCourse.length;
   return (
-    <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
+    <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 mt-16 md:grid-cols-3  lg:grid-cols-4 mt-14">
       <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
         <CardHeader>
           <CardTitle>Total Sales</CardTitle>

@@ -5,11 +5,11 @@ const USER_API = "http://localhost:8080/api/v1/user/";
 
 export const authApi = createApi({
   //generally reducerpath ka name same hota hai jo upper authApi hai
-  reducerPath: "authApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: USER_API,
-    credentials: "include",
-  }),
+    reducerPath:"authApi",
+    baseQuery:fetchBaseQuery({
+        baseUrl:USER_API,
+        credentials:'include'
+    }),
   //builder ka use data fecth or get ke leye karte hai
   endpoints: (builder) => ({
     registerUser: builder.mutation({
@@ -42,7 +42,6 @@ export const authApi = createApi({
       }),
       async onQueryStarted(_, { queryFulfilled, dispatch }) {
         try {
-          await queryFulfilled;
           dispatch(userLoggedOut());
         } catch (error) {
           console.log(error);
